@@ -26,12 +26,11 @@ const countryInfoDetails = countries => {
     countryList.innerHTML = "";
     countryInfo.innerHTML = `
         <img src="${countries[0].flags.svg}"/><h3>${countries[0].name.official}</h3>
-        <p><span class=""bold">Capital:</span> ${countries[0].capital}</p>
-        <p><span class=""bold">Population:</span> ${countries[0].population}</p>
-        <p><span class=""bold">Languages:</span> ${Object.values(countries[0].languages)}</p>                 
+        <p><span class="bold">Capital:</span> ${countries[0].capital}</p>
+        <p><span class="bold">Population:</span> ${countries[0].population}</p>
+        <p><span class="bold">Languages:</span> ${Object.values(countries[0].languages)}</p>                 
     `;
 };
-
 
 function printCountries(countries) {
     let countriesListHTML = "";
