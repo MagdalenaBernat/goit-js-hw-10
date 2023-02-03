@@ -11,6 +11,9 @@ const searchBox = document.querySelector("#search-box");
 const countryList = document.querySelector(".country-list");
 const countryInfo = document.querySelector(".country-info");
 let countriesListHTML = "";
+let li = "";
+let img = "";
+let heading = "";
 
 const countryListElement = country => {
     li = document.createElement('li');
@@ -48,9 +51,9 @@ function printCountries(countries) {
         } else {
             clearCode();
             countryInfo.innerHTML = "";
-            let li = "";
-            let img = "";
-            let heading = "";
+            // let li = "";
+            // let img = "";
+            // let heading = "";
             countries.forEach((country) => {
                 countryListElement(country);
             })
