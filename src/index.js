@@ -39,7 +39,7 @@ function printCountries(countries) {
 searchBox.addEventListener("input", _.debounce(() => {
     searchBox.textContent.trim();
    fetchCountries(searchBox.value).then(countries => {printCountries(countries)});
-}, 300, {
+}, DEBOUNCE_DELAY, {
     leading: false,
     trailing: true,
 }));
