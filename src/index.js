@@ -10,15 +10,11 @@ const DEBOUNCE_DELAY = 300;
 const searchBox = document.querySelector("#search-box");
 const countryList = document.querySelector(".country-list");
 const countryInfo = document.querySelector(".country-info");
-let countriesListHTML = "";
-let li = "";
-let img = "";
-let heading = "";
 
 const countryListElement = country => {
-    li = document.createElement('li');
-    img = document.createElement('img');
-    heading = document.createElement('h4');
+    let li = document.createElement('li');
+    let img = document.createElement('img');
+    let heading = document.createElement('h4');
     img.src = country.flags.svg;
     heading.innerHTML = country.name.official;
     li.appendChild(img);
@@ -27,7 +23,6 @@ const countryListElement = country => {
 };
 
 const countryInfoDetails = countries => {
-    clearCode();
     countryInfo.innerHTML = `
         <img src="${countries[0].flags.svg}"/><h3>${countries[0].name.official}</h3>
         <p><span class="bold">Capital:</span> ${countries[0].capital}</p>
@@ -37,23 +32,16 @@ const countryInfoDetails = countries => {
 
 };
 
-const clearCode = () => { countryList.innerHTML = "" };
+const clearCode = () => { countryList.innerHTML = ""; countryInfo.innerHTML = ""};
 
 function printCountries(countries) {
-    countriesListHTML = "";
+    let countriesListHTML = "";
     if (countries) {
         if (countries.length === 1) {
-            clearCode();
             countryInfoDetails(countries);
         } else if (countries.length >= 10) {
-            countryInfo.innerHTML = "";
             Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
         } else {
-            clearCode();
-            countryInfo.innerHTML = "";
-            // let li = "";
-            // let img = "";
-            // let heading = "";
             countries.forEach((country) => {
                 countryListElement(country);
             })
@@ -62,6 +50,10 @@ function printCountries(countries) {
 };
 
 searchBox.addEventListener("input", _.debounce(() => {
+    clearCode();
+    if (!searchBox.value) {
+        return;
+    }
     fetchCountries(searchBox.value.trim())
         .then(countries => {
             if (countries) {
@@ -73,9 +65,8 @@ searchBox.addEventListener("input", _.debounce(() => {
     trailing: true,
 }));
 
-
-searchBox.addEventListener("keydown", (event) => {
-    if (searchBox.textContent = "" || event.code === "Backspace" || event.code === "Delete") {
-        clearCode();
-    }
-});
+// searchBox.addEventListener("keydown", (event) => {
+//     if (searchBox.textContent = "" || event.code === "Backspace" || event.code === "Delete") {
+//         clearCode();
+//     }
+// });
