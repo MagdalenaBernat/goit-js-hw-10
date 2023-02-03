@@ -3,7 +3,7 @@
 import './css/styles.css';
 const _ = require("lodash");
 import Notiflix from 'notiflix';
-import { fetchCountries, fetchSelectedCountry } from './fetchCountries';
+import { fetchCountries } from './fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -13,57 +13,34 @@ const countryInfo = document.querySelector(".country-info");
 
 function printCountries(countries) {
     let countriesListHTML = "";
-
-    countries.forEach((country) => {
+    if (countries.length === 1) {
         countriesListHTML += `
-        <ul>
-            <li>
-                <h4>${country.flags.svg} ${country.name.official}</h3> 
-            </li>                   
-        <ul>
-        `
-    })
-    countryList.innerHTML = countriesListHTML;
-};
-
-function printCountryInfo(oneCountry) {
-    let countryInfoHTML = "";
-    country.forEach((country) => {
-        countryInfoHTML += `
-        <li>
-            <h3>${country.flags.svg} ${country.name.official}</h3> 
-            <p>"Capital: " ${country.capital}</p>
-            <p>"Population: " ${country.population}</p>
-            <p>"Languages: " ${country.languages}</p>  
-        </li>                   
+        <div>
+            <img src="${countries[0].flags.svg}"/><h3>${countries[0].name.official}</h3> 
+            <p>Capital: ${countries[0].capital}</p>
+            <p>Population: ${countries[0].population}</p>
+            <p>Languages: ${Object.values(countries[0].languages)}</p>  
+        </div>                   
     `
-    })
-    countryInfo.innerHTML = countryInfoHTML;
+    } else if (countries.length >= 10) {
+        Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
+    } else {
+        countries.forEach((country) => {
+            countriesListHTML += `
+        <div>
+            <img src="${country.flags.svg}"/><h4>${country.name.official}</h4> 
+        </div>
+        `
+        })
+    }
+        countryList.innerHTML = countriesListHTML;
 };
 
-searchBox.addEventListener("keydown", _.debounce(() => {
+searchBox.addEventListener("input", _.debounce(() => {
     searchBox.textContent.trim();
-    fetchCountries();
+   fetchCountries(searchBox.value).then(countries => {printCountries(countries)});
 }, 300, {
     leading: false,
     trailing: true,
 }));
-
-
-
-function wrongCountryName () {
-    if (searchBox.textContent.value != fetchCountries.textContent.value) {
-        Notiflix.Notify.failure('Oops, there is no country with that name');
-    }
-};
-
-const matchedCountries = () => {
-    if (printCountries.value >= 10) {
-        Notiflix.Notify.info('Too many matches found. Please enter a more specific name.');
-    } else if (printCountries.value >= 2 && printCountries.value > 10) {
-        printCountries();
-    } else if (printCountries.value = 1) {
-        printCountryInfo();
-    };
-};
 

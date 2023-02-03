@@ -1,36 +1,23 @@
-"use strict";
+export { fetchCountries };
+import Notiflix from 'notiflix';
 
-export { fetchCountries, fetchSelectedCountry };
+const searchBox = document.querySelector("#search-box");   
+    
+    
+const COUNTRIES_API_URL = "https://restcountries.com";
+const API_VERSION = "v3.1";
 
-
-const COUNTRIES_API_URL = "https://restcountries.com/v3.1/name/{name}";
-// selected country URL pattern: https://restcountries.com/v2/{service}?fields={field},{field},{field}
-const SELECTED_COUNTRY = "https://restcountries.com/v2/{all}?fields={name.official},{capital},{population},{flags.svg},{languages}";
-
-function fetchCountries(name){
-    fetch(COUNTRIES_API_URL)
-        .then((response) => response.json())
-        .then((countries) => {
-            if (searchBox.textContent.value != fetchCountries.textContent.value) {
-                Notiflix.Notify.failure('Oops, there is no country with that name');
-            } else {
-                printCountries();
-            };
-        })
-        .catch((error) => {
-            console.log("Error: ", error);
-        })
-};
-
-function fetchSelectedCountry(){
-    fetch(SELECTED_COUNTRY)
-        .then((response) => response.json())
-        .then((oneCountry) => {
-            if (searchBox.textContent.value != fetchCountries.textContent.value) {
-                Notiflix.Notify.failure('Oops, there is no country with that name');
-            } else {
-                printCountryInfo();
-            };
+function fetchCountries(name) {
+    return fetch(`${COUNTRIES_API_URL}/${API_VERSION}/name/${name}?fields=name,capital,population,flags,languages`)
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+    } else if(response.status === 404) {
+       Notiflix.Notify.failure('Oops, there is no country with that name');
+    return Promise.reject('error 404')
+    } else {
+      return Promise.reject('some other error: ' + response.status)
+    }
         })
         .catch((error) => {
             console.log("Error: ", error);
