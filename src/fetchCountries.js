@@ -1,9 +1,6 @@
 export { fetchCountries };
 import Notiflix from 'notiflix';
 
-const searchBox = document.querySelector("#search-box");   
-    
-    
 const COUNTRIES_API_URL = "https://restcountries.com";
 const API_VERSION = "v3.1";
 
