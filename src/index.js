@@ -29,7 +29,6 @@ const countryInfoDetails = countries => {
         <p><span class="bold">Population:</span> ${countries[0].population}</p>
         <p><span class="bold">Languages:</span> ${Object.values(countries[0].languages)}</p>                 
     `;
-
 };
 
 const clearCode = () => { countryList.innerHTML = ""; countryInfo.innerHTML = ""};
